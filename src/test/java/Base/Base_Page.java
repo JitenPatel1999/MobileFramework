@@ -3,6 +3,7 @@ package Base;
 import java.awt.Point;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -58,11 +59,33 @@ public class Base_Page extends Base_Test{
 		tap.addAction(finger.createPointerUp(0));
 		driver.perform(Arrays.asList(tap));
 	}
+	
 	public static WebElement scrollTo(String option) {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		WebElement wb = driver.findElement(AppiumBy.androidUIAutomator(
 				"new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(text(\"" + option + "\"));"));
 		wait.until(ExpectedConditions.visibilityOf(wb));
+		System.out.println(option+" has been scrolled to.");
+		return wb;
+	}
+	
+	public static WebElement scrollElementToCenter(String option) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement wb = driver.findElement(AppiumBy.androidUIAutomator(
+				"new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(text(\"" + option + "\"));"));
+		wait.until(ExpectedConditions.visibilityOf(wb));
+		 int screenHeight = driver.manage().window().getSize().getHeight();
+		 int elementY = wb.getLocation().getY();
+		 int offsetFromCenter = elementY - screenHeight / 2;
+
+		 //Moves the element to the center of the screen if necessary
+		 PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+		 Sequence swipe = new Sequence(finger, 1);
+		 swipe.addAction(finger.createPointerMove(Duration.ofSeconds(0), PointerInput.Origin.viewport(), 0, elementY));
+		 swipe.addAction(finger.createPointerDown(0));
+		 swipe.addAction(finger.createPointerMove(Duration.ofMillis(500), PointerInput.Origin.viewport(), 0, elementY - offsetFromCenter));
+		 swipe.addAction(finger.createPointerUp(0));
+		 driver.perform(Arrays.asList(swipe));
 		System.out.println(option+" has been scrolled to.");
 		return wb;
 	}

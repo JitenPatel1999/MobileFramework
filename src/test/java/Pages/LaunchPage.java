@@ -24,6 +24,9 @@ public class LaunchPage extends Base_Page{
 	@AndroidFindBy(xpath="//android.widget.Spinner[@resource-id=\"com.androidsample.generalstore:id/spinnerCountry\"]")
 	private static WebElement countries;
 	
+	@AndroidFindBy(xpath="//android.widget.TextView[@resource-id=\"android:id/text1\"]")
+	private static WebElement country;
+	
 	@AndroidFindBy(xpath="//android.widget.RadioButton[@resource-id=\"com.androidsample.generalstore:id/radioMale\"]")
 	private static WebElement male;
 	
@@ -35,6 +38,38 @@ public class LaunchPage extends Base_Page{
 	
 	@AndroidFindBy(xpath="//android.widget.TextView[@resource-id=\"com.androidsample.generalstore:id/toolbar_title\"]")
 	private static WebElement title;
+	
+	@AndroidFindBy(xpath="//android.widget.TextView[@text=\"Select the country where you want to shop\"]")
+	private static WebElement SelectorTitle;
+	
+	
+	public String getTitle() {
+		return title.getText();
+	}
+	
+	public String getNameField() {
+		return nameField.getText();
+	}
+	
+	public String getCountry() {
+		return country.getText();
+	}
+	
+	public String getSelectorTitle() {
+		return SelectorTitle.getText();
+	}
+	
+	public String getMale() {
+		return male.getText();
+	}
+	
+	public String getFemale() {
+		return female.getText();
+	}
+	
+	public String getLetsShop() {
+		return LetsShop.getText();
+	}
 	
 	public void countrySelect(String country) throws InterruptedException {
 		tap(countries, "countries");

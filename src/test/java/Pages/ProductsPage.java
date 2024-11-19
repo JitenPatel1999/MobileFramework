@@ -23,18 +23,31 @@ public class ProductsPage extends Base_Page {
 	@AndroidFindBy(xpath="//android.widget.ImageButton[@resource-id=\"com.androidsample.generalstore:id/appbar_btn_back\"]")
 	private static WebElement back;
 	
+	@AndroidFindBy(xpath="//android.widget.TextView[@resource-id=\"com.androidsample.generalstore:id/toolbar_title\"]")
+	private static WebElement title;
+	
+	public String getTitle() {
+		return title.getText();
+	}
+	
+	public String getShoeName(String name) {
+		return driver.findElement(AppiumBy.xpath(""
+				+ "//android.widget.TextView[@resource-id=\"com.androidsample.generalstore:id/productName\" and @text=\""
+				+name+"\"]")).getText();
+	}
+	
+	public String getShoePrice(String price) {
+		return driver.findElement(AppiumBy.xpath(""
+				+ "//android.widget.TextView[@resource-id=\"com.androidsample.generalstore:id/productPrice\" and @text=\""
+				+price+"\"]")).getText();
+	}
 	public void addToCart(String shoename) {
-		WebElement shoe = scrollTo(shoename);
-		System.out.println(shoe.getText());
+		WebElement shoe = scrollElementToCenter(shoename);
 		List<WebElement> addToCart = driver.findElements(AppiumBy.xpath(
 	    "//android.widget.TextView[@resource-id='com.androidsample.generalstore:id/productAddCart']"));
 		List<WebElement> shoes = driver.findElements(AppiumBy.xpath(
 				"//android.widget.TextView[@resource-id=\"com.androidsample.generalstore:id/productName\"]"));
-		System.out.println(addToCart.size());
-		System.out.println(shoes.size());
 		for(int i = 0; i < shoes.size(); i++) {
-			System.out.println("Shoe "+i+": "+shoes.get(i).getText());
-			System.out.println("Add"+i+": "+addToCart.get(i).getText());
 			if(shoes.get(i).getText().equals(shoename)) {
 				tap(addToCart.get(i), "ADD TO CART");
 			}
